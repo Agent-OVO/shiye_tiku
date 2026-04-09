@@ -14,6 +14,7 @@
     `构建时间 ${formatDateTime(data.site.buildAt)}`,
     `${data.site.paperCount} 套试卷`,
     `${data.site.questionCount} 道题`,
+    `${data.site.solvedCount || 0} 道已补答案`,
   ].join(" · ");
 
   if (!window.location.hash) {
@@ -140,6 +141,7 @@
       <section class="stats-grid">
         ${renderStatCard("试卷总数", `${data.site.paperCount}`)}
         ${renderStatCard("题目总量", `${data.site.questionCount}`)}
+        ${renderStatCard("已补解析", `${data.site.solvedCount || 0}`)}
         ${renderStatCard("覆盖年份", `${data.site.yearCount}`)}
         ${renderStatCard("题型路径", `${topicCount}`)}
       </section>
@@ -421,6 +423,7 @@
     const relatedQuestions = (index.topicQuestionsMap.get(question.classificationPath) || [])
       .filter((item) => item.id !== question.id)
       .slice(0, 8);
+    const answerLabel = question.answer ? `参考答案 ${question.answer}` : "暂未补全答案";
 
     return `
       <section class="panel">
@@ -463,10 +466,26 @@
             <div class="section-heading">
               <div>
                 <h2>题目原文</h2>
-                <p>当前版本仅用于学题型，不展示答案解析。</p>
+                <p>保留原题排版，并补入粉笔题库检索到的参考答案与解析。</p>
               </div>
             </div>
             <div class="content-block">${question.questionHtml || `<p>${escapeHtml(question.questionText || "暂无题目内容。")}</p>`}</div>
+          </section>
+
+          <section class="panel">
+            <div class="section-heading">
+              <div>
+                <h2>参考答案与解析</h2>
+                <p>答案和解析来自粉笔站内检索结果，保留为题库内的参考信息。</p>
+              </div>
+            </div>
+            <div class="answer-highlight">
+              <span class="answer-label">参考答案</span>
+              <span class="answer-value">${escapeHtml(question.answer || "待补全")}</span>
+            </div>
+            ${question.analysisHtml ? `<div class="content-block">${question.analysisHtml}</div>` : `<p class="helper-text">当前题目暂未抓到解析。</p>`}
+            ${question.solutionSource ? `<p class="source-note">题源：${escapeHtml(question.solutionSource)}</p>` : ""}
+            ${question.solutionUpdatedAt ? `<p class="source-note">抓取时间：${escapeHtml(formatDateTime(question.solutionUpdatedAt))}</p>` : ""}
           </section>
 
           <section class="panel">
@@ -487,6 +506,7 @@
             <div class="meta-list">
               <div class="meta-item"><strong>所属试卷</strong><span>${escapeHtml(question.paperTitle)}</span></div>
               <div class="meta-item"><strong>题号</strong><span>第 ${padQuestionNo(question.questionNo)} 题</span></div>
+              <div class="meta-item"><strong>参考答案</strong><span>${escapeHtml(answerLabel)}</span></div>
               <div class="meta-item"><strong>年份</strong><span>${question.year}</span></div>
               <div class="meta-item"><strong>地区</strong><span>${escapeHtml(question.province)}</span></div>
               <div class="meta-item"><strong>模块</strong><span>${escapeHtml(question.moduleName)}</span></div>

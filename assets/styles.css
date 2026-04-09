@@ -465,6 +465,40 @@ select {
   line-height: 1.8;
 }
 
+.answer-highlight {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px;
+  border: 1px solid rgba(200, 106, 45, 0.22);
+  border-radius: 22px;
+  background: linear-gradient(135deg, rgba(200, 106, 45, 0.12) 0%, rgba(15, 61, 55, 0.08) 100%);
+}
+
+.answer-label {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: rgba(15, 61, 55, 0.08);
+  color: var(--brand);
+  font-size: 0.88rem;
+}
+
+.answer-value {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 2vw, 2.2rem);
+  color: #8b461b;
+}
+
+.source-note {
+  margin: 0;
+  color: var(--ink-soft);
+  line-height: 1.7;
+}
+
 .content-block h3 {
   margin: 8px 0 0;
   font-size: 1.08rem;
